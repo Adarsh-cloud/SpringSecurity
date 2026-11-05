@@ -3,6 +3,7 @@ package com.example.SpringSecurity.configuration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.Customizer;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AuthorizeHttpRequestsConfigurer;
@@ -16,6 +17,7 @@ import org.springframework.security.web.server.MatcherSecurityWebFilterChain;
 
 @Configuration
 @EnableWebSecurity
+@EnableMethodSecurity
 public class SecurityConfiguration {
 
     @Bean
@@ -30,8 +32,9 @@ public class SecurityConfiguration {
     }
     @Bean
     public UserDetailsManager getDetails(){
-        UserDetails user1=User.withUsername("aj").password("{noop}aj").build();
-        UserDetails admin=User.withUsername("admin").password("{noop}admin").build();
-        return new InMemoryUserDetailsManager(user1,admin);
+        UserDetails user1=User.withUsername("aj").password("{noop}aj").roles("USER").build();
+        UserDetails admin=User.withUsername("admin").password("{noop}admin").roles("ADMIN").build();
+        UserDetails user2=User.withUsername("bj").password("{noop}bj").roles("USER").build();
+        return new InMemoryUserDetailsManager(user1,admin,user2);
     }
 }
